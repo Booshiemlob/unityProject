@@ -18,34 +18,54 @@ using UnityEngine;
 
 public class XPHandler : MonoBehaviour
 {
-    public void UpdateXp(int xp, Stats stats)
-    {
-        stats.XP += xp;
+    string lvlup = "Congratulations you have levelled up!";
 
-        int curlvl =(int)(0.1f * Mathf.Sqrt(xp));
-
-        if(curlvl != stats.level)
-        {
-            stats.level = curlvl;
-            Debug.Log("Congratz on reaching a new level!");
-        }
-
-        int xpnextlevel = 100 + (stats.level + 1) * (stats.level + 1);
-        int diffxp = xpnextlevel - stats.XP;
-
-        int totalDiff = xpnextlevel - (100 * stats.level * stats.level);
-
-    }
 
     private void OnEnable()
     {
+        GameEvents.OnBattleConclude += GainXP;
     }
 
     private void OnDisable()
     {
+        GameEvents.OnBattleConclude -= GainXP;
     }
 
     public void GainXP(BattleResultEventData data)
     {
+        if (data.outcome == 1)
+        {
+            data.player.XP += data.player.level *10;
+            data.npc.XP += data.npc.level * 4;
+
+
+        }
+        else
+        {
+            data.player.XP += data.player.level * 4;
+            data.npc.XP += data.npc.level * 10;
+
+               
+            }
+    
+                if (data.player.XP >= 200)
+            {
+                data.player.XP = 0;
+                data.player.level += 1;
+                data.player.luck += 1;
+                data.player.style += 1;
+                data.player.rhythm += 1;
+                Debug.Log(lvlup);
+
+            }
+            if (data.npc.XP >= 200)
+            {
+                data.npc.XP = 0;
+                data.npc.level += 1;
+                data.npc.luck += 1;
+                data.npc.style += 1;
+                data.npc.rhythm += 1;
+         
+            }
     }
 }

@@ -15,10 +15,22 @@ public static class BattleHandler
 {
     public static void Battle(BattleEventData data)
     {
-        //This needs to be replaced with some actual battle logic, at present 
-        // we just award the maximum possible win to the player
-        float outcome = 1;
+        int botlvl = data.npc.level*3+1;
+        int playerlvl = data.player.level * 3 + 1;
 
+        int bot = Random.Range(1, botlvl);
+        int player = Random.Range(1, playerlvl); 
+
+        float outcome;
+        if (player > bot)
+        {
+            outcome = 1;
+        }
+        else
+        {
+            outcome = 0;
+        }
+         
         var results = new BattleResultEventData(data.player, data.npc, outcome);
 
         GameEvents.FinishedBattle(results);

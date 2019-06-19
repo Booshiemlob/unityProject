@@ -20,6 +20,6 @@ public class Stats : MonoBehaviour
     private void Awake()
     {
         //assign initial stats
-        StatsGenerator.InitialStats(this);
+       // StatsGenerator.InitialStats(this);
     }
 }
